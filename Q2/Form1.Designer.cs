@@ -102,6 +102,9 @@
 			this.Controls.Add(this.dice2Label);
 			this.Controls.Add(this.dice1Label);
 			this.Controls.Add(this.resultButton);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);

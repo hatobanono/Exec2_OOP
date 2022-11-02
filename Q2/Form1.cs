@@ -31,35 +31,44 @@ namespace Q2
 		private void resultButton_Click(object sender, EventArgs e)
 		{
 			GetDice();
-			resultLabel.Text = 
 		}
 
 		private void GetDice()
 		{
 			int seed = Guid.NewGuid().GetHashCode();
 			var random = new Random(seed);
+			int d1, d2, d3, d4, sum;
 
-			int d1 = random.Next(1, 7);
-			int d2 = random.Next(1, 7);
-			int d3 = random.Next(1, 7);
-			int d4 = random.Next(1, 7);
-			int[] ints = { d1, d2, d3, d4 };
-			for (int i = 0; i < ints.Length; i++)
+			int num = 7;
+			while (num == 7)
 			{
-				for (int k = i+1; k < ints.Length; k++)
+				d1 = random.Next(1, 7);
+				d2 = random.Next(1, 7);
+				d3 = random.Next(1, 7);
+				d4 = random.Next(1, 7);
+				int[] ints = { d1, d2, d3, d4 };
+				for (int i = 0; i < ints.Length; i++)
 				{
-					if (ints[i] == ints[k])
+					for (int k = i + 1; k < ints.Length; k++)
 					{
-						int temp = ints[i];
+						if (ints[i] == ints[k])
+						{
+							if (ints[i] < num)
+							{
+								num = ints[i];
+							}
+						}
 					}
 				}
+				sum = d1 + d2 + d3 + d4 - 2 * num;
+				resultLabel.Text = $"您的點數是{sum}";
+				dice1Label.Text = Convert.ToString(d1);
+				dice2Label.Text = Convert.ToString(d2);
+				dice3Label.Text = Convert.ToString(d3);
+				dice4Label.Text = Convert.ToString(d4);
 			}
-
-			dice1Label.Text = Convert.ToString(d1);
-			dice2Label.Text = Convert.ToString(d2);
-			dice3Label.Text = Convert.ToString(d3);
-			dice4Label.Text = Convert.ToString(d4);
+			
 		}
-	}
 
+	}
 }
