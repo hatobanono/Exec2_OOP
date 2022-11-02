@@ -18,12 +18,14 @@ namespace Q1
 			InitializeComponent();
 
 			game = new Game1A2B();
+			game.NewGame();
 			resultTextBox.Text = String.Empty;
 		}
 
 		private void newButton_Click(object sender, EventArgs e)
 		{
 			game.NewGame();
+			resultTextBox.Text = String.Empty;
 		}
 
 		private void ansButton_Click(object sender, EventArgs e)
@@ -33,17 +35,40 @@ namespace Q1
 
 		private void inputButton_Click(object sender, EventArgs e)
 		{
-			string input = GetNumber();
+			string ints = GetNumber();
+			if (string.IsNullOrEmpty(ints) == false)
+			{
+				string result = game.ConfirmAnswer(ints);
+				resultTextBox.Text += result + "\r\n";
+			}
 		}
 
 		private string GetNumber()
 		{
 			TextBox txt = this.inputTextbox;
 			string input = txt.Text;
-			if (string.IsNullOrEmpty(input)) return null;
 
 			bool isInt = int.TryParse(input, out int number);
-			return isInt ? input : null;
+
+			if (string.IsNullOrEmpty(input) || input.Length != 4 || !isInt)  
+			{
+				MessageBox.Show("請輸入正確的四個數字");
+				return null;
+			}
+
+			int[] ints = new int[] { input[0], input[1], input[2], input[3] };
+			for (int i = 0; i < ints.Length; i++)
+			{
+				for (int k = i + 1; k < ints.Length; k++)
+				{
+					if (ints[i] == ints[k])
+					{
+						MessageBox.Show("請勿輸入重複數字");
+						return null;
+					}
+				}
+			}
+			return input;
 		}
 	}
 	public class Game1A2B
@@ -55,6 +80,7 @@ namespace Q1
 			ans = string.Empty;
 			int seed = Guid.NewGuid().GetHashCode();
 			var random = new Random(seed);
+
 			for(int i = 0; i < ints.Length; i++)
 			{
 				int int2 = random.Next(0, 10);
@@ -62,10 +88,38 @@ namespace Q1
 				ints[i] = ints[int2];
 				ints[int2] = temp;
 			}
+
 			for (int k = 0; k < 4; k++)
 			{
 				ans = ans + ints[k];
 			}
+		}
+
+		internal string ConfirmAnswer(string ints)
+		{
+			int a = 0;
+			int b = 0;
+
+
+			for (int i = 0; i < ints.Length; i++)
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					if (ints[i] == ans[k])
+					{
+						if (i == k)
+						{
+							a++;
+						}
+						else
+						{
+							b++;
+						}
+					}
+				}
+			}
+			if (a == 4) MessageBox.Show("您答對了");
+			return $"{a} A {b} B";
 		}
 	}
 }

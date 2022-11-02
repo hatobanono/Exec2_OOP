@@ -51,12 +51,9 @@ namespace Q2
 				{
 					for (int k = i + 1; k < ints.Length; k++)
 					{
-						if (ints[i] == ints[k])
+						if (ints[i] == ints[k] && ints[i] < num) 
 						{
-							if (ints[i] < num)
-							{
-								num = ints[i];
-							}
+							num = ints[i];
 						}
 					}
 				}
